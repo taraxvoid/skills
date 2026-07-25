@@ -1,7 +1,7 @@
 {
   "name": "trans-wrongs",
   "description": "Flag forms/copy that force binary/assumed gender, sexuality, relationship structure, or legal-only names onto users, as a one-time repo audit or a PR/diff-time check.",
-  "version": "1.0.0",
+  "version": "1.2.0",
   "author": { "name": "Tara" },
   "license": "MIT"
 }

@@ -30,6 +30,45 @@ docs. A gendered assumption in a push notification or a support-ticket
 autoresponder is just as much a finding as one in a signup form. For each
 hit, note file:line, the specific defect, and its severity (see below).
 
+### What to scan and what to skip
+
+When scanning HTML or web pages, focus on **form field labels** and
+**visible text content** only:
+
+- **Form field labels**: `<label>` elements, `aria-label` attributes,
+  `placeholder` text, and `<option>` text inside `<select>` elements.
+- **Visible text content**: text between tags after stripping
+  `<script>`, `<style>`, `<meta>`, `<title>`, and HTML comment blocks.
+- **Copy in templates/emails/notifications**: the actual user-facing string
+  values in source code, not variable names or comments.
+
+**Do NOT match against:**
+
+- HTML `<title>` tags — "title" in `<title>` is not an honorific field.
+- CSS class names or IDs — "age" in `class="age-range"` is not an age field.
+- JavaScript variable names, function names, or comments.
+- HTML attributes like `data-title`, `data-age`, etc.
+- Substrings without word boundaries — "age" in "stage" or "page" is not
+  an age field; "sex" in "sexuality" or "intersex" in page text is not a
+  sex field.
+
+**Implementation tip:** When auditing web pages programmatically, strip
+`<script>` and `<style>` blocks first, then extract form field labels
+and visible text. Only then apply pattern matching. This eliminates the
+vast majority of false positives without missing real findings.
+
+**Web audits — excluded links:** When auditing a directory or listing page
+that links to external sites, skip links to social-media and platform
+services (Facebook, Instagram, Discord, Meetup, Bluesky, Substack,
+Linktree/Carrd, etc.). Their signup/contact forms are platform-controlled
+and cannot be audited as part of the directory. Note them in the report's
+"Excluded links" section instead.
+
+**Throttling:** When fetching multiple web pages, pause between each
+individual request (≥300ms) to avoid overwhelming servers. Do not batch
+requests without delays — sequential fetches with pauses are the safe
+default.
+
 Produce one consolidated report. Present it directly in chat by default;
 write it to a file (e.g. `TRANSWRONGS-REPORT.md` at the repo root) only if
 the user asks for it to persist. Group findings by severity (violations
@@ -179,6 +218,10 @@ suggestion — never as a defect. Two flavors:
   - [ ] If `<field>` is collected but never used for anything besides copy personalization, reconsider collecting it at all
   ```
 
+**Excluded links** (web audits only): List external/platform links that
+were not audited and why (e.g. "Facebook — platform-controlled form").
+This ensures transparency about audit scope.
+
 ## Common mistakes
 
 | Situation | Wrong move | Right move |
@@ -192,6 +235,11 @@ suggestion — never as a defect. Two flavors:
 | "Sex" field on a medical intake / insurance / clinical-trial form | Flag like any other Sex-vs-Gender wording issue | No finding — medical context is a legitimate carve-out |
 | Display name field exists, pre-filled from legal name, user can edit it at signup | Treat as solved | Still check: is it editable *after* account creation too, not just at signup? |
 | Age field is a yes/no "are you over 19/21" checkbox | Flag for asking about age | No finding — legal threshold gates are fine as long as they don't collect the actual age/DOB |
+| "title" appears in HTML `<title>` tag or CSS class name | Flag as an honorific field | Only flag when it's a form field label or visible copy asking for a title/honorific — `<title>` tags and CSS classes are metadata, not form fields |
+| "age" appears in CSS/JS or "18+" in page text | Flag as an age/DOB field | Only flag when it's a form field collecting exact age or DOB — "age" in class names, JS variables, or "18+" in event descriptions are not form fields |
+| "sex" appears in "sexuality" or "intersex" in page text | Flag as a sex selector | Only flag when it's a form field label asking for sex/gender — substrings in descriptive text are not form fields |
+| Word-boundary false positives ("age" in "stage", "page") | Flag as an age field | Use proper word boundaries and context — only flag form fields, not substrings in unrelated words |
+| Scanning raw HTML without stripping `<script>`/`<style>` | Flag every match as a finding | Strip non-visible blocks first, then match against form labels and visible text only — this eliminates most false positives |
 
 If nothing in scope touches a field or copy like this, contribute no
 findings and no filler text. Silence is the correct output far more often
