@@ -1,9 +1,9 @@
 ---
-name: transwrongs
+name: trans-wrongs
 description: Check whether a form, field, or piece of copy forces a binary/assumed gender, sexuality, relationship structure, or legal-only name onto users — a signup/checkout/profile field with no "prefer not to say" or free-text escape, a salutation derived from a title field, an honorific field that exists at all, a sexuality question that's nobody's business, copy that assumes "spouse"/"Mr. and Mrs.", or a legal-name-only field with no display-name option. Run this either as a one-time full-repo audit (when asked to audit/scan a codebase for exclusionary forms/copy) or as part of a PR/diff-time code review, even if the user didn't ask about gender or inclusivity by name.
 ---
 
-# transwrongs
+# trans-wrongs
 
 A normal review, even a security/privacy-conscious one, tends to file
 forced-binary-gender fields, honorific-derived salutations, and gratuitous
@@ -20,7 +20,7 @@ This skill runs in two modes:
 ## Mode 1: One-time full-repo audit
 
 Trigger: the user asks for a full scan — "audit this repo for exclusionary
-forms/copy," "run transwrongs on this codebase," "check our forms for
+forms/copy," "run trans-wrongs on this codebase," "check our forms for
 gendered assumptions," or similar.
 
 Search broadly: form components, templates, API/DB schemas, transactional
@@ -82,7 +82,7 @@ findings plainly with file:line.
 
 ## Reporting
 
-- **category**: `transwrongs-finding`
+- **category**: `trans-wrongs-finding`
 - **severity**: `major` or `minor`, per the tiers above
 - **summary**: name the field/copy and the specific defect — not a generic
   "consider reviewing this field."
