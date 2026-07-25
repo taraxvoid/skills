@@ -10,8 +10,8 @@
       "description": "Interview + writer for a global CLAUDE.md identity directive: stop guessing name/pronouns from git config/account/email, ask before writing them into potentially dayjob-facing artifacts."
     },
     {
-      "name": "transwrongs",
-      "source": "./skills/transwrongs",
+      "name": "trans-wrongs",
+      "source": "./skills/trans-wrongs",
       "description": "Flag forms/copy that force binary/assumed gender, sexuality, relationship structure, or legal-only names onto users, as a one-time repo audit or a PR/diff-time check."
     }
   ]
