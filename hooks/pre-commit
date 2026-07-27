@@ -1,0 +1,24 @@
+#!/usr/bin/env bash
+#
+# pre-commit — runs validate-skills.py before every commit.
+#
+# To enable (once per clone):
+#   git config core.hooksPath hooks
+#
+# To bypass for a single commit:
+#   git commit --no-verify
+#
+set -euo pipefail
+
+# Resolve the repo root (parent of the hooks/ directory)
+HOOKS_DIR="$(cd "$(dirname "$0")" && pwd)"
+REPO_ROOT="$(cd "$HOOKS_DIR/.." && pwd)"
+
+SCRIPT="$REPO_ROOT/scripts/validate-skills.py"
+
+if [ ! -f "$SCRIPT" ]; then
+    echo "pre-commit: validation script not found at $SCRIPT" >&2
+    exit 1
+fi
+
+python3 "$SCRIPT"

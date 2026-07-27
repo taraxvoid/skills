@@ -16,7 +16,7 @@ without asking first.
 
 Covered Failure Mode: Outing someone in a team-facing doc due to agent assumptions
 -  git identity and account name are attribution
-metadata which often do not reflect their private identity 
+metadata which often do not reflect their private identity
 -  The identity used for a given repo differs based on context (dayjob vs. personal)
 
 ## When to Use
@@ -37,7 +37,7 @@ answer is ambiguous):
    e.g.  README, CLAUDE.md, PR, commit, comment — which of these
    should I do?
    - **Always ask first** (recommended) - You're thinking about coming out at work.
-   - **Always use my chosen name/pronouns** - You're out at work 
+   - **Always use my chosen name/pronouns** - You're out at work
    - **Always use git config / account metadata** - You're NOT out at work.
 3. "(optional) **Configure existing repo preferences now**?
    - Configure existing repos where you want to use chosen name/pronouns or dayjob-facing identity

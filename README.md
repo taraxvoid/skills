@@ -29,3 +29,34 @@ Tara's skillz which won't ever pay the billz (but do important things anyway)
    should be independently installable/versioned).
 2. Add an entry to `.claude-plugin/marketplace.json` under `plugins`.
 3. Commit, push to `main`.
+
+## Local validation
+
+A pre-commit hook validates repo integrity before every commit. It checks:
+
+- **JSON validity** — all `.json` files parse without error
+- **marketplace.json schema** — required top-level fields present
+- **plugin.json schemas** — each plugin.json has name, version, description
+- **Cross-reference integrity** — marketplace.json ↔ `skills/<name>/` ↔
+  `SKILL.md` ↔ `plugin.json` (names match, no orphans)
+- **Frontmatter** — `SKILL.md` has valid YAML frontmatter with a `name`
+  matching its directory
+- **Markdown hygiene** — no trailing whitespace, files end with newline
+
+### Enable hooks (one-time per clone)
+
+```bash
+git config core.hooksPath hooks
+```
+
+### Run validation manually
+
+```bash
+python3 scripts/validate-skills.py
+```
+
+### Bypass the hook for a single commit
+
+```bash
+git commit --no-verify
+```
