@@ -1,16 +1,16 @@
 ---
 name: trans-wrongs
-description: Check whether a form, field, or piece of copy forces a binary/assumed gender, sexuality, relationship structure (including poly exclusion), parental terms, age, or legal-only name onto users — a signup/checkout/profile field with no "prefer not to say" or free-text escape, a salutation derived from a title field, an honorific field that exists at all, a sexuality question that's nobody's business, copy that assumes "spouse"/"Mr. and Mrs."/"Mother's Name", an exact age/DOB field, or a legal-name-only field with no display-name option. Also flags good practice worth calling out (poly-inclusive options, an optional pronoun field on a signup form). Applies to forms AND non-form copy — error messages, notifications, marketing/onboarding copy, docs. Run this either as a one-time full-repo audit (when asked to audit/scan a codebase for exclusionary forms/copy) or as part of a PR/diff-time code review, even if the user didn't ask about gender or inclusivity by name.
+description: Check whether a form, field, or piece of copy forces a binary/assumed gender, sexuality, relationship structure (including poly exclusion), parental terms, age, or legal-only name onto users - a signup/checkout/profile field with no "prefer not to say" or free-text escape, a salutation derived from a title field, an honorific field that exists at all, a sexuality question that's nobody's business, copy that assumes "spouse"/"Mr. and Mrs."/"Mother's Name", an exact age/DOB field, or a legal-name-only field with no display-name option. Also flags good practice worth calling out (poly-inclusive options, an optional pronoun field on a signup form). Applies to forms AND non-form copy - error messages, notifications, marketing/onboarding copy, docs. Run this either as a one-time full-repo audit (when asked to audit/scan a codebase for exclusionary forms/copy) or as part of a PR/diff-time code review, even if the user didn't ask about gender or inclusivity by name.
 ---
 
 # trans-wrongs
 
 A normal review, even a security/privacy-conscious one, tends to file
 forced-binary-gender fields, honorific-derived salutations, and gratuitous
-sexuality questions under "unnecessary PII" or "a nice-to-have" — worth
+sexuality questions under "unnecessary PII" or "a nice-to-have" - worth
 reconsidering, not urgent. That framing misses what's actually at stake:
 forcing a binary choice, an inescapable honorific, a legal-only name, or an
-assumed relationship structure onto a form doesn't just annoy some users —
+assumed relationship structure onto a form doesn't just annoy some users -
 it makes a subset of them unable to complete it honestly at all. Some
 abandon. Some lie, which corrupts the record you're about to make decisions
 on. Either way, this is a concrete, fixable defect, not a style nit.
@@ -19,7 +19,7 @@ This skill runs in two modes:
 
 ## Mode 1: One-time full-repo audit
 
-Trigger: the user asks for a full scan — "audit this repo for exclusionary
+Trigger: the user asks for a full scan - "audit this repo for exclusionary
 forms/copy," "run trans-wrongs on this codebase," "check our forms for
 gendered assumptions," or similar.
 
@@ -44,11 +44,11 @@ When scanning HTML or web pages, focus on **form field labels** and
 
 **Do NOT match against:**
 
-- HTML `<title>` tags — "title" in `<title>` is not an honorific field.
-- CSS class names or IDs — "age" in `class="age-range"` is not an age field.
+- HTML `<title>` tags - "title" in `<title>` is not an honorific field.
+- CSS class names or IDs - "age" in `class="age-range"` is not an age field.
 - JavaScript variable names, function names, or comments.
 - HTML attributes like `data-title`, `data-age`, etc.
-- Substrings without word boundaries — "age" in "stage" or "page" is not
+- Substrings without word boundaries - "age" in "stage" or "page" is not
   an age field; "sex" in "sexuality" or "intersex" in page text is not a
   sex field.
 
@@ -57,7 +57,7 @@ When scanning HTML or web pages, focus on **form field labels** and
 and visible text. Only then apply pattern matching. This eliminates the
 vast majority of false positives without missing real findings.
 
-**Web audits — excluded links:** When auditing a directory or listing page
+**Web audits - excluded links:** When auditing a directory or listing page
 that links to external sites, skip links to social-media and platform
 services (Facebook, Instagram, Discord, Meetup, Bluesky, Substack,
 Linktree/Carrd, etc.). Their signup/contact forms are platform-controlled
@@ -66,7 +66,7 @@ and cannot be audited as part of the directory. Note them in the report's
 
 **Throttling:** When fetching multiple web pages, pause between each
 individual request (≥300ms) to avoid overwhelming servers. Do not batch
-requests without delays — sequential fetches with pauses are the safe
+requests without delays - sequential fetches with pauses are the safe
 default.
 
 Produce one consolidated report. Present it directly in chat by default;
@@ -78,10 +78,10 @@ below).
 ## Mode 2: PR/diff-time check
 
 Trigger: run this as part of any code review, PR review, or `/code-review`
-pass that touches a form, account/profile field, or user-facing copy — even
+pass that touches a form, account/profile field, or user-facing copy - even
 if the user didn't ask about gender or inclusivity by name.
 
-Only evaluate what the diff actually adds or changes — a diff that removes
+Only evaluate what the diff actually adds or changes - a diff that removes
 one of these fields entirely is the system working; say nothing about it.
 Report via `ReportFindings` if available in this context, otherwise state
 findings plainly with file:line.
@@ -90,25 +90,25 @@ findings plainly with file:line.
 
 Three tiers: **Violation** (blocks honest completion outright), **Warning**
 (real, but lower-stakes), and **Good** (worth calling out even though
-nothing's wrong — see below). Never phrase a Violation or Warning as
+nothing's wrong - see below). Never phrase a Violation or Warning as
 blocking merge; this is a flag, not a gate, in either mode.
 
 ### Violation
 
 - A gender/sex selector with no third option, "prefer not to say," or
   free-text field at all (binary-only).
-- Any honorific/title field (Mr/Mrs/Miss/Ms) — the ding is that it exists
+- Any honorific/title field (Mr/Mrs/Miss/Ms) - the ding is that it exists
   at all, not just that it's required with no escape. Recommend removing
   it outright rather than making it optional.
 - A name field that only accepts one "legal" name with no separate
-  preferred/display-name option — forces misgendering or deadnaming
+  preferred/display-name option - forces misgendering or deadnaming
   wherever that name is used downstream.
 - A display-name field that exists but is **not user-choosable at account
-  creation and/or not editable after creation** — this is the case that
+  creation and/or not editable after creation** - this is the case that
   lets a legal name/deadname leak through permanently even though a
   display-name concept nominally exists.
 - Any field asking for sexual orientation/sexuality, on a form that isn't
-  itself about sexual orientation (i.e. nearly always) — like honorifics,
+  itself about sexual orientation (i.e. nearly always) - like honorifics,
   the ding is that it's being asked at all. Recommend removing it outright.
 - Copy that assumes a relationship/family structure ("spouse," "Mr. and
   Mrs.," forced pairing) instead of a neutral term ("partner"), a plain
@@ -128,56 +128,56 @@ blocking merge; this is a flag, not a gate, in either mode.
 ### Warning
 
 - A field or selector labeled "Sex" where "Gender" or "Gender Identity"
-  would be more accurate — a wording ding, independent of whether the
+  would be more accurate - a wording ding, independent of whether the
   options themselves are adequate. (Carve-out: see below for medical
   context.)
 - A field labeled bare "Legal Name" with no indication of why it's needed
-  or where it's used — even when collecting a legal name is genuinely
+  or where it's used - even when collecting a legal name is genuinely
   necessary (tax/compliance forms, etc). The fix isn't to remove the
   field, it's to pair it with a separate preferred/display-name field used
   everywhere else, and scope the legal-name label to explain why + where
-  it's used — e.g. "Legal name (required for tax reporting only — won't be
+  it's used - e.g. "Legal name (required for tax reporting only - won't be
   shown elsewhere)" instead of a bare "Legal Name."
-- **No display-name field at all** — the "missing" case, distinct from the
+- **No display-name field at all** - the "missing" case, distinct from the
   Violation case above (an existing-but-uneditable display name).
 - A relationship field limited to mono-normative options only
-  ("Spouse"/"Partner" radio, no self-describe, no multi-partner support) —
+  ("Spouse"/"Partner" radio, no self-describe, no multi-partner support) -
   narrower than the Violation case (forced/gendered terms), but still
   excludes poly relationships.
-- An age-range/bracket selector (e.g. "25–34") — narrower than needed, but
+- An age-range/bracket selector (e.g. "25-34") - narrower than needed, but
   not as bad as an exact DOB field.
 
 ### Good
 
 Call out positive findings too, framed as commendation or a low-cost
-suggestion — never as a defect. Two flavors:
+suggestion - never as a defect. Two flavors:
 
-- **Commend**: the copy/form already does something right — e.g. a
+- **Commend**: the copy/form already does something right - e.g. a
   relationship field offers free self-describe text or explicit
   non-monogamous/poly options, or a gender field has a genuine "prefer not
   to say"/self-describe option.
-- **Suggest**: a low-cost addition would be good practice — e.g. a
+- **Suggest**: a low-cost addition would be good practice - e.g. a
   name-collecting marketing/newsletter/account-signup form has no optional
   pronoun field alongside name. Note it as an opportunity ("along with
   name, this would make the copy more personal and signal the product is
   trans-aware"), not a gap. Scope this suggestion to forms that are
   actually collecting a name for personalization (signup/newsletter/account
-  creation) — don't suggest it on every form that happens to have a name
+  creation) - don't suggest it on every form that happens to have a name
   field (e.g. checkout, support tickets).
 
 ## No-finding carve-outs
 
 - A "Sex" field on a form that's clearly medical/clinical (health intake,
-  insurance, clinical-trial signup) — no finding at all, not even the
+  insurance, clinical-trial signup) - no finding at all, not even the
   Sex-vs-Gender Warning. Outside a medical context, the normal binary-only
   and Sex-vs-Gender rules apply.
-- A boolean "confirm you are over 19/21" legal-age-threshold checkbox — no
+- A boolean "confirm you are over 19/21" legal-age-threshold checkbox - no
   finding, as long as it only gates on the threshold and doesn't collect
   the actual age or DOB. (An age-range selector or exact-age/DOB field is
-  a different case — see Warning/Violation above.)
+  a different case - see Warning/Violation above.)
 - A sexuality field on a dating/LGBTQ-specific service, where the product's
   actual purpose is about orientation/attraction.
-- A diff that removes one of these fields entirely — the system working,
+- A diff that removes one of these fields entirely - the system working,
   say nothing.
 
 ## Reporting
@@ -185,17 +185,17 @@ suggestion — never as a defect. Two flavors:
 - **category**: `trans-wrongs-finding`
 - **severity**: `violation`, `warning`, or `good`, per the tiers above
 - **summary**: name the field/copy and the specific defect (or, for Good,
-  the specific positive practice or suggestion) — not a generic "consider
+  the specific positive practice or suggestion) - not a generic "consider
   reviewing this field."
 - **failure_scenario** (Violation/Warning only): name who this excludes and
-  what they do instead (abandon vs. misrepresent) — e.g. "a non-binary
+  what they do instead (abandon vs. misrepresent) - e.g. "a non-binary
   user hits the gender dropdown, finds no honest option, and either
-  abandons `/signup` or picks one at random — either way the completion
+  abandons `/signup` or picks one at random - either way the completion
   rate silently absorbs the loss or the input data quality degrades, and
   nobody investigating a drop in signups would think to look at this
   field."
 - **why_it_helps** (Good only, replaces `failure_scenario`): name who
-  benefits and how — e.g. "a poly user signing up sees their relationship
+  benefits and how - e.g. "a poly user signing up sees their relationship
   structure isn't erased by the form, which is a small but real trust
   signal."
 - **End every finding with a short GFM checklist**, tailored to the
@@ -212,34 +212,34 @@ suggestion — never as a defect. Two flavors:
   - [ ] Add a self-describe or explicit non-monogamous/poly option to `<relationship field>`
   - [ ] Add a parent/guardian alternative to `<gendered-parent-only field>`
   - [ ] Replace `<DOB/exact-age field>` with a legal-age-threshold confirmation instead of collecting the actual age
-  - [ ] Don't derive salutation/pronoun from `<field>` — ask directly or use a neutral greeting
+  - [ ] Don't derive salutation/pronoun from `<field>` - ask directly or use a neutral greeting
   - [ ] Remove the silent default so nothing is submitted unless the user actively chooses it
   - [ ] Consider adding an optional pronoun field alongside name on `<signup form>`
   - [ ] If `<field>` is collected but never used for anything besides copy personalization, reconsider collecting it at all
   ```
 
 **Excluded links** (web audits only): List external/platform links that
-were not audited and why (e.g. "Facebook — platform-controlled form").
+were not audited and why (e.g. "Facebook - platform-controlled form").
 This ensures transparency about audit scope.
 
 ## Common mistakes
 
 | Situation | Wrong move | Right move |
 |---|---|---|
-| Field has three-plus options (M/F/Other) | Treat as solved | "Other" as the only non-binary option is itself othering — check for real self-description (free text) or "prefer not to say," not just a third radio button |
-| Honorific field is optional | Treat as solved because it's not required | Still a Violation — the field's existence is the ding, not whether it's required |
-| Diff removes one of these fields entirely | No finding | Correct — say nothing, that's the system working |
+| Field has three-plus options (M/F/Other) | Treat as solved | "Other" as the only non-binary option is itself othering - check for real self-description (free text) or "prefer not to say," not just a third radio button |
+| Honorific field is optional | Treat as solved because it's not required | Still a Violation - the field's existence is the ding, not whether it's required |
+| Diff removes one of these fields entirely | No finding | Correct - say nothing, that's the system working |
 | Legal name is genuinely required (tax/compliance) | Flag it the same as an unnecessary legal-name-only field | Warning, different fix: pair with a display-name field and scope the label to explain why, don't recommend removing it |
-| Sexuality field on a dating/LGBTQ-specific service | Flag it like any other sexuality field | Use judgment — if the product's actual purpose is about orientation/attraction, asking is the point; the finding is for gratuitous asks on unrelated forms (checkout, generic signup, support tickets) |
-| Relationship field offers only "Spouse"/"Partner", no self-describe | Treat as solved (not gendered) | Still a Warning — mono-normative framing excludes poly even without gendered terms |
-| "Sex" field on a medical intake / insurance / clinical-trial form | Flag like any other Sex-vs-Gender wording issue | No finding — medical context is a legitimate carve-out |
+| Sexuality field on a dating/LGBTQ-specific service | Flag it like any other sexuality field | Use judgment - if the product's actual purpose is about orientation/attraction, asking is the point; the finding is for gratuitous asks on unrelated forms (checkout, generic signup, support tickets) |
+| Relationship field offers only "Spouse"/"Partner", no self-describe | Treat as solved (not gendered) | Still a Warning - mono-normative framing excludes poly even without gendered terms |
+| "Sex" field on a medical intake / insurance / clinical-trial form | Flag like any other Sex-vs-Gender wording issue | No finding - medical context is a legitimate carve-out |
 | Display name field exists, pre-filled from legal name, user can edit it at signup | Treat as solved | Still check: is it editable *after* account creation too, not just at signup? |
-| Age field is a yes/no "are you over 19/21" checkbox | Flag for asking about age | No finding — legal threshold gates are fine as long as they don't collect the actual age/DOB |
-| "title" appears in HTML `<title>` tag or CSS class name | Flag as an honorific field | Only flag when it's a form field label or visible copy asking for a title/honorific — `<title>` tags and CSS classes are metadata, not form fields |
-| "age" appears in CSS/JS or "18+" in page text | Flag as an age/DOB field | Only flag when it's a form field collecting exact age or DOB — "age" in class names, JS variables, or "18+" in event descriptions are not form fields |
-| "sex" appears in "sexuality" or "intersex" in page text | Flag as a sex selector | Only flag when it's a form field label asking for sex/gender — substrings in descriptive text are not form fields |
-| Word-boundary false positives ("age" in "stage", "page") | Flag as an age field | Use proper word boundaries and context — only flag form fields, not substrings in unrelated words |
-| Scanning raw HTML without stripping `<script>`/`<style>` | Flag every match as a finding | Strip non-visible blocks first, then match against form labels and visible text only — this eliminates most false positives |
+| Age field is a yes/no "are you over 19/21" checkbox | Flag for asking about age | No finding - legal threshold gates are fine as long as they don't collect the actual age/DOB |
+| "title" appears in HTML `<title>` tag or CSS class name | Flag as an honorific field | Only flag when it's a form field label or visible copy asking for a title/honorific - `<title>` tags and CSS classes are metadata, not form fields |
+| "age" appears in CSS/JS or "18+" in page text | Flag as an age/DOB field | Only flag when it's a form field collecting exact age or DOB - "age" in class names, JS variables, or "18+" in event descriptions are not form fields |
+| "sex" appears in "sexuality" or "intersex" in page text | Flag as a sex selector | Only flag when it's a form field label asking for sex/gender - substrings in descriptive text are not form fields |
+| Word-boundary false positives ("age" in "stage", "page") | Flag as an age field | Use proper word boundaries and context - only flag form fields, not substrings in unrelated words |
+| Scanning raw HTML without stripping `<script>`/`<style>` | Flag every match as a finding | Strip non-visible blocks first, then match against form labels and visible text only - this eliminates most false positives |
 
 If nothing in scope touches a field or copy like this, contribute no
 findings and no filler text. Silence is the correct output far more often
