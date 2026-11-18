@@ -1,6 +1,7 @@
 ---
 name: trans-wrongs
 description: Check whether a form, field, or piece of copy forces a binary/assumed gender, sexuality, relationship structure (including poly exclusion), parental terms, age, or legal-only name onto users - a signup/checkout/profile field with no "prefer not to say" or free-text escape, a salutation derived from a title field, an honorific field that exists at all, a sexuality question that's nobody's business, copy that assumes "spouse"/"Mr. and Mrs."/"Mother's Name", an exact age/DOB field, or a legal-name-only field with no display-name option. Also flags good practice worth calling out (poly-inclusive options, an optional pronoun field on a signup form). Applies to forms AND non-form copy - error messages, notifications, marketing/onboarding copy, docs. Run this either as a one-time full-repo audit (when asked to audit/scan a codebase for exclusionary forms/copy) or as part of a PR/diff-time code review, even if the user didn't ask about gender or inclusivity by name.
+license: MIT
 ---
 
 # trans-wrongs
